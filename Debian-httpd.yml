@@ -1,0 +1,37 @@
+
+  
+
+  - name: install apache2
+    apt: 
+      name: apache2
+      state: latest
+      update_cache: yes
+  
+  - name: start apache2
+    service:
+      name: apache2
+      state: started
+    notify: restart apache2
+  - name: enable apache
+    service:
+      name: apache2
+      enabled: yes 
+  - name: install unzip
+    apt:
+      name: unzip 
+      state: latest
+
+  - name: download template
+    get_url: 
+      url: https://www.free-css.com/assets/files/free-css-templates/download/page258/bluesky.zip
+      dest: /var/www/html/
+  
+  - name: unzip bluesky.zip
+    unarchive:
+      src: /var/www/html/bluesky.zip
+      dest: /var/www/html/
+      remote_src: yes
+
+  - name: move bluesky 
+    shell: rsync -r /var/www/html/bluesky/  /var/www/html/
+   # notify: restart apache2
